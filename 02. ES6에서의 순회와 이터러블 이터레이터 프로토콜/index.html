@@ -19,6 +19,8 @@
   for (const a of str) {
     // log(a);
   }
+  // 명령적으로 기술하기보다는 선언적으로 리스트값을 순회하는 더 간결한 방식
+  // ES6가 어떤 규약을 열고 순회에 대해서 어떻게 추상화를 했는지 알아야 한다.
 </script>
 
 ### Array를 통해 알아보기
@@ -26,7 +28,7 @@
 <script>
   log('Arr -----------');
   const arr = [1, 2, 3];
-  let iter1 = arr[Symbol.iterator]();
+  let iter1 = arr[Symbol.iterator](); 
   for (const a of iter1) log(a);
 </script>
 
@@ -50,6 +52,7 @@
 </script>
 
 ## 이터러블/이터레이터 프로토콜
+- array, set, map 자바스크립트 내장객체로서 이터러블/이터레이터 프로토콜을 따르고 있음
 - 이터러블: 이터레이터를 리턴하는 [Symbol.iterator]() 를 가진 값
 - 이터레이터: { value, done } 객체를 리턴하는 next() 를 가진 값
 - 이터러블/이터레이터 프로토콜: 이터러블을 for...of, 전개 연산자 등과 함께 동작하도록한 규약
@@ -66,6 +69,7 @@
         },
         [Symbol.iterator]() {
           return this;
+          // 이전까지 진행되어 있던 자기 상태에서 계속 next를 할 수 있도록 만들어 둔 것이 well formed iterator
         }
       }
     }
@@ -87,6 +91,7 @@
   for (const a of document.querySelectorAll('*')) log(a);
   const all = document.querySelectorAll('*');
   let iter3 = all[Symbol.iterator]();
+  // 이렇게 순회할 수 있는 이유는 배열이 아니라 Symbol.iterator가 구현되어 있기 때문
   log(iter3.next());
   log(iter3.next());
   log(iter3.next());

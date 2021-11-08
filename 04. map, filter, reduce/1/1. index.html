@@ -10,23 +10,35 @@
   ];
 </script>
 
-
 # map
 
 <script>
+  // 고차함수 
   const map = (f, iter) => {
+    /*
+      추상화를 함 : 객체들의 공통적인 프로퍼티와 메소드를 뽑아내는 작업을 의미 
+      구체적인 것을 감추고, 보고 싶어하는 전체적인 특성을 드러내는 것 
+      함수 그 자체도 기본적인 추상화 방법 (함수의 이름을 통해 구체적을 하는 일을 추상화하여 나타냄)
+    */
+    // 함수를 받아서 어떤 값을 수집할 것인지 f라는 함수한테 완전히 위임을 함 
     let res = [];
     for (const a of iter) {
       res.push(f(a));
     }
     return res;
+    // 함수형 프로그래밍에서는 함수가 인자와 리턴값으로 소통함
+    // 결과를 리턴해서 그 결괏값을 가지고 변화를 일으킴
+    // 
   };
-
-  // let names = [];
-  // for (const p of products) {
-  //   names.push(p.name);
-  // }
-  // log(names);
+  /*
+    let names = [];
+    for (const p of products) {
+      names.push(p.name);
+    - 직접적으로 내가 어떤 값을 수집하겠다고 코딩을 하게 됨
+    }
+    log(names);
+    - log는 직접적으로 어떠한 명령을 일으켜서 변화를 일으킴
+  */
 
   log(map(p => p.name, products));
 
@@ -46,7 +58,8 @@
   log([1, 2, 3].map(a => a + 1));
 
   log(map(el => el.nodeName, document.querySelectorAll('*')));
-
+  // 브라우저에서 사용되는 web API - ECMAScript에 iterator를 따르고 있기 때문에 앞으로 많은 헬퍼 함수들과의 조합성이 좋아짐 
+  
   // const it = document.querySelectorAll('*')[Symbol.iterator]();
   // log(it.next());
   // log(it.next());
@@ -61,12 +74,12 @@
   }
 
   log(map(a => a * a, gen()));
+  // 다형성이 높다.
 
   let m = new Map();
   m.set('a', 10);
   m.set('b', 20);
   log(new Map(map(([k, a]) => [k, a * 2], m)));
-
   console.clear();
 </script>
 
