@@ -24,11 +24,17 @@
 ## go, pipe
 
 <script>
-  const go = (...args) => reduce((a, f) => f(a), args);
+  const go = (...args) => reduce((a, f) => f(a), args); 
+  // 함수들과 인자들을 전달해서 즉시 값을 평가
+  // 인자들이 들어왔을 때, 이 인자들을 이용해서 계속해서 다음 함수에 전달 (reduce)
   const pipe = (f, ...fs) => (...as) => go(f(...as), ...fs);
+  // 함수를 리턴하는 함수
+  // 함수들이 나열되어 있는 합성된 함수를 만드는 함수 (하나의 함수를 만들어서 함수를 리턴)
+  // 파이프 함수는 
+
 
   go(
-    add(0, 1),
+    add(0, 1), // 시작할 때 인자 두개를 평가해 1로 시작되도록 만들 수 있다.
     a => a + 10,
     a => a + 100,
     log);
@@ -39,7 +45,7 @@
     a => a + 10,
     a => a + 100);
 
-  log(f(0, 1));
+  log(f(0, 1)); 
 
   console.clear();
 
@@ -70,8 +76,17 @@
 </script>
 
 ## curry
+- 함수를 값으로 다루면서 내가 원하는 시점에 평가시키는 함수
+- 함수를 받아서 함수를 리턴하고, 인자를 받아서 원하는 갯수만큼의 인자가 들어왔을 때 받아두었던 함수를 나중에 평가시키는 함수
 
 <script>
+  const add1 = a => a + 1;
+  const f1 = a => add1(a);
+  const f2 = add1;
+  add1(3);
+  f1(3);
+  f2(3);
+  console.log(add1(3), f1(3), f2(3)); // 4
 
   const mult = curry((a, b) => a * b);
   log(mult(3)(2));

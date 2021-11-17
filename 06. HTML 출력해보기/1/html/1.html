@@ -21,6 +21,16 @@
 
   const add = (a, b) => a + b;
 
+  // const total_quantity = pipe(
+  //   map(p => p.quantity),
+  //   reduce(add));
+  
+  // const total_price = pipe(
+  //   map(p => p.price * p.quantity),
+  //   reduce(add)
+  // )
+  
+
   const sum = curry((f, iter) => go(
     iter,
     map(f),
