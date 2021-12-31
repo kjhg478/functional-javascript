@@ -15,7 +15,9 @@
   };
 
   var list = range(4);
-  log(list);
+  // range 함수는 실행했을 때, 즉시 배열로 평가가 됨 (이미 코드가 평가되면서 값이 만들어짐)
+
+  log(list); 
   log(reduce(add, list));
 </script>
 
@@ -31,7 +33,12 @@
   };
 
   var list = L.range(4);
-  log(list);
+
+  log(list); 
+  // L.range {<suspended>} - next()를 통해 값을 가져올 수 있는 Iterator (순회하기 전까지는 값이 뜨지 않음)
+  // Iterable을 Iterator로 만든 이후에 안에 있는 값을 하나씩 조회하면서 결과를 만듦
+  // 이터레이터로 저 함수를 순회할 때마다 값이 꺼내어짐 즉, list.next()를 하기 전까지 L.range()함수 안에서는 동작이 없음
+  // 위와 비교하면 L.range는 배열형태가 아닌애로 있다가 실제로 reduce안에서 해당하는 값이 진짜 필요할때까지 기다렸다가 평가가 이루어짐
   log(reduce(add, list));
 </script>
 
@@ -61,14 +68,19 @@
   console.time('');
   go(
     range(10000),
+    // 10000이라는 크기의 배열을 만들고 5개를 뽑기 때문에 비효율적
     take(5),
     reduce(add),
     log);
   console.timeEnd('');
 
+  // [1, 2, 3, 4, 5, 6, ...] 
+  // ([1, 2])
+  // 몇 개의 length가 될 지 모르는 어떤 array에서 2개의 결과값만 받아오는 것과 array에서 앞에 2개의 값만 꺼내서 어떠한 연산을 만나기 전까지 기다리다가 계산
   console.time('');
   go(
     L.range(10000),
+    // 최대 이 만큼의 array를 만들지 않고 5개의 값만 만들기 때문에 훨씬 효율적
     take(5),
     reduce(add),
     log);
