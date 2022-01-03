@@ -203,6 +203,16 @@
 
   log(queryStr({limit: 10, offset: 10, type: 'notice'}));
 
+
+  // function *a() {
+  //   yield 10;
+  //   yield 11;
+  //   yield 12;
+  //   yield 13;
+  // }
+  //
+  // log(join(' - ', a()));
+
   /*
     const go = (...args) => reduce((a, f) => f(a), args);
     const pipe = (f, ...fs) => (...as) => go(f(...as), ...fs);
@@ -226,14 +236,6 @@
   
   */
 
-  // function *a() {
-  //   yield 10;
-  //   yield 11;
-  //   yield 12;
-  //   yield 13;
-  // }
-  //
-  // log(join(' - ', a()));
 </script>
 
 ### take, find
@@ -249,13 +251,23 @@
     {age: 31},
     {age: 37}
   ];
-
+  /*
+    const find = (f, iter) => go(
+      iter,
+      filter(a => (console.log(a), f(a))),
+      L.filter(a => (console.log(a), f(a))), -> 미뤄져 있는 결과 
+      a => (console.log(a), f(a)),
+      take(1),
+      ([a]) => a
+    );
+  */
   const find = curry((f, iter) => go(
     iter,
     L.filter(f),
     take(1),
-    ([a]) => a));
-
+    ([a]) => a)
+  );
+    // 이터러블을 넣어서 필터를 하다가 첫 번째꺼 하나 찾아지면 구조분해해서 꺼내준다.
   log(find(u => u.age < 30)(users));
 
   go(users,
