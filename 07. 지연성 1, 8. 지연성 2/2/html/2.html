@@ -183,6 +183,9 @@
 
 ## 결과를 만드는 함수 reduce, take
 
+- map이나 filter같은 함수는 배열이나, 이터러블한 값의 안쪽에 있는 원소들에게 함수들을 합성해주는 역할 (지연성을 가질 수 있음)
+- reduce나 take는 안쪽에 있는 값들을 꺼내서 더한다거나 하는 식으로 값을 유지시키는게 아니라 깨뜨리는 역할 (즉, 연산 시작을 알리는 시작점)
+
 ### reduce
 
 <script>
@@ -199,6 +202,29 @@
     join('&'));
 
   log(queryStr({limit: 10, offset: 10, type: 'notice'}));
+
+  /*
+    const go = (...args) => reduce((a, f) => f(a), args);
+    const pipe = (f, ...fs) => (...as) => go(f(...as), ...fs);
+
+    1.
+    const queryStr = obj => go(
+      obj,
+      Object.entries,
+      map(([k, v]) => `${k}=${v}`),
+      reduce((a, b) => `${a}&{b}`)
+    );
+
+    2.
+    const queryStr = obj => pipe(
+      Object.entries,
+      map(([k, v]) => `${k}=${v}`),
+      reduce((a, b) => `${a}&{b}`)
+    );
+
+    log(queryStr({ limit: 10, offset: 10, type: 'notice' }));
+  
+  */
 
   // function *a() {
   //   yield 10;
