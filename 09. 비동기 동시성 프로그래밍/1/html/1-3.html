@@ -8,4 +8,5 @@
   });
 
   new Promise(resolve => resolve(new Promise(resolve => resolve(1)))).then(log);
+  // 프로미스가 중첩된다 하더라도 내가 원하는 곳의 한번의 then으로 꺼내서 사용 가능
 </script>
