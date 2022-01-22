@@ -2,6 +2,10 @@
 
 ## async/await
 
+- 자바스크립트에서 비동기 상황을 보다 동기적인 코드를 다루기 위한 방법
+- 비동기적으로 일어나는 일들을 문장으로 다루려고 할 때, 동기적인 문장으로 다룰 수 있게 해주는 방법
+- 보다 쉽게 비동기 상황을 제어할 수 있음
+
 <script>
   function delay(time) {
     return new Promise(resolve => setTimeout(() => resolve(), time));
@@ -15,8 +19,14 @@
   async function f1() {
     const a = await delayIdentity(10);
     const b = await delayIdentity(5);
-    return a + b;
+    // const a = 10;
+    // const b = 5; Promise { <resolved>: 15 }
+    return a + b; 
+    // async 함수를 선언하면 어떤 값을 리턴하든 프로미스를 리턴하는 함수가 됨
+    // 아 인에서만 값이 제대로 출력됨
   }
+  console.log(f1()); // Promise{<pending>}
+  // f1().then(log);
 
   // const pa = Promise.resolve(10);
   const pa = f1();
@@ -40,6 +50,16 @@
   function delayI(a) {
     return new Promise(resolve => setTimeout(() => resolve(a), 100));
   }
+
+  async function f2() {
+    const list = [1, 2, 3, 4];
+    const temp = list.map(async a => await delayI(a * a));
+    // map 함수는 async를 선언해준다고 해서 내부적으로 프로미스 함수를 리턴해도 프로미스를 제어해주지 못함
+    // log(temp); 
+    const res = await temp;
+    // log(res);
+  }
+
 
   async function f2() {
     const list = [1, 2, 3, 4];
@@ -71,6 +91,16 @@
 </script>
 
 ## QnA. 이제 비동기는 async/await로 제어할 수 있는데 왜 파이프라인이 필요한지?
+- 둘이 해결하고자 하는 목적이 다름
+- 비교 대상이 아닌 다른 문제를 해결하고자 하는 두 개의 기술
+
+- async await   
+  - 비동기 상황을 동기적인 문장으로 풀어서 코딩을 하고싶을 때
+  - 원래 표현식으로 갇혀 있는 promise를 문장으로 다루기 위해서 async await 키워드로 특정 부분에서 함수체인이 아닌 문장형으로 다루기 위함
+  - 합성이 아니라 풀어놓기 위함
+- 파이프라인
+  - 비동기 프로그래밍이 아닌 명령형 프로그래밍을 하지 않고 더 안전하게 함수 합성을 하기 위한 것
+  - 동기 비동기 상황으로 바라보는 것이 아닌 어떠한 코드를 리스트로 다루면서 연속적으로 함수 실행과 함수 합성을 통해 로직을 만드는 것
 
 <script>
   function f5(list) {
@@ -81,6 +111,8 @@
       C.take(2),
       reduce((a, b) => delayI(a + b)));
   }
+  // 복잡한 for문이나 if문 for문을 빠져나가는 로직이나 이런것들을 쉽고 안전, 간단하게 코딩
+  // 명령형적인 로직을 해결하기 위함
 
   go(f5([1, 2, 3, 4, 5, 6, 7, 8]), a => log(a, 'f5'));
 
